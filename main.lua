@@ -22,6 +22,17 @@ local markIndex = {
     ["skull"] = 8,
 }
 
+local marked = {
+    [1] = false,
+    [2] = false,
+    [3] = false,
+    [4] = false,
+    [5] = false,
+    [6] = false,
+    [7] = false,
+    [8] = false,
+}
+
 do
     local make_logger = function(r, g, b)
         return function(...)
@@ -515,7 +526,9 @@ do
                                 end
                             end
                             rm.setColor(1,1,1,1)
+                            if not marked[i] then marked[i] = true end
                         else
+                            if marked[i] then marked[i] = false end
                             rm.setColor(1,1,1,sorgis_raid_marks.fadeunmarked/100)
                         end
                         rm.setCastHighlightHeight(newHeight)
@@ -766,3 +779,9 @@ do
     end)
 end
 
+function srmIsMarked(markID)
+    if type(markID) ~= "number" or markID < 1 or markID > 8 then
+        error("Expecting a number between 1 and 8. Got: "..markID)
+    end
+    return marked[markID]
+end
